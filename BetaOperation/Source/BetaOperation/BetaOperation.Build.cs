@@ -1,0 +1,49 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+using UnrealBuildTool;
+
+public class BetaOperation : ModuleRules
+{
+	public BetaOperation(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		PublicDependencyModuleNames.AddRange(new string[] {
+			"Core",
+			"CoreUObject",
+			"Engine",
+			"InputCore",
+			"EnhancedInput",
+			"AIModule",
+			"StateTreeModule",
+			"GameplayStateTreeModule",
+			"UMG",
+			"Slate",
+			"SlateCore",
+            "GameplayAbilities",
+            "GameplayTasks",
+			"GameplayTags"
+			
+        });
+
+		PrivateDependencyModuleNames.AddRange(new string[] { });
+
+		PublicIncludePaths.AddRange(new string[] {
+			"BetaOperation",
+			"BetaOperation/Variant_Horror",
+			"BetaOperation/Variant_Horror/UI",
+			"BetaOperation/Variant_Shooter",
+			"BetaOperation/Variant_Shooter/AI",
+			"BetaOperation/Variant_Shooter/UI",
+			"BetaOperation/Variant_Shooter/Weapons"
+		});
+
+		// Uncomment if you are using Slate UI
+		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+
+		// Uncomment if you are using online features
+		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
+
+		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+	}
+}
