@@ -1,5 +1,6 @@
 #include "BOHealthAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectTypes.h" // for full definition of FGameplayEffectModCallbackData
 
 
 UBOHealthAttributeSet::UBOHealthAttributeSet()
@@ -12,14 +13,12 @@ UBOHealthAttributeSet::UBOHealthAttributeSet()
 void UBOHealthAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-
 	DOREPLIFETIME_CONDITION_NOTIFY(UBOHealthAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBOHealthAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 }
 
 
-// Ensure MaxHealth never goes below 1; optionally pre-clamp Health to new Max
+// Clamp MaxHealth when it changes; if MaxHealth shrinks, clamp Health down to it.
 void UBOHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
@@ -27,17 +26,16 @@ void UBOHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribu
 
 	if (Attribute == GetMaxHealthAttribute())
 	{
-		NewValue = FMath::Max(1.f, NewValue);
+		NewValue = FMath::Max(1.f, NewValue); // keep > 0
 	}
 	else if (Attribute == GetHealthAttribute())
 	{
-		// Pre-clamp to current Max so UI previews look right when designers tweak values
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
 }
 
 
-// After any GE executes, enforce 0..Max bounds
+// After effects apply, clamp Health to [0, MaxHealth]
 void UBOHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -45,7 +43,8 @@ void UBOHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		const float Clamped = FMath::Clamp(GetHealth(), 0.f, GetMaxHealth());
+		const float CurrentMax = GetMaxHealth();
+		const float Clamped = FMath::Clamp(GetHealth(), 0.f, CurrentMax);
 		SetHealth(Clamped);
 	}
 	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
@@ -57,16 +56,4 @@ void UBOHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 			SetHealth(NewMax);
 		}
 	}
-}
-
-
-void UBOHealthAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBOHealthAttributeSet, Health, OldValue);
-}
-
-
-void UBOHealthAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBOHealthAttributeSet, MaxHealth, OldValue);
 }
