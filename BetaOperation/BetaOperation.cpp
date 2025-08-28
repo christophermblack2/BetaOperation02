@@ -5,4 +5,4 @@
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, BetaOperation, "BetaOperation" );
 
-DEFINE_LOG_CATEGORY(LogBetaOperation)
+DEFINE_LOG_CATEGORY(LogBetaOperation);
