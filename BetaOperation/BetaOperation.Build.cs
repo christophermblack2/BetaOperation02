@@ -19,10 +19,11 @@ public class BetaOperation : ModuleRules
 			"GameplayStateTreeModule",
 			"UMG",
 			"Slate",
-			"SlateCore",
-            "GameplayAbilities",
-            "GameplayTasks",
-			"GameplayTags"
+                       "SlateCore",
+           "GameplayAbilities",
+           "GameplayTasks",
+                       "GameplayTags",
+                       "Niagara"
 			
         });
 
