@@ -29,15 +29,6 @@ public class BetaOperation : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
-		PublicIncludePaths.AddRange(new string[] {
-			"BetaOperation",
-			"BetaOperation/Variant_Horror",
-			"BetaOperation/Variant_Horror/UI",
-			"BetaOperation/Variant_Shooter",
-			"BetaOperation/Variant_Shooter/AI",
-			"BetaOperation/Variant_Shooter/UI",
-			"BetaOperation/Variant_Shooter/Weapons"
-		});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

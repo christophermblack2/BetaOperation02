@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Engine/EngineTypes.h"
+#include "Engine/OverlapResult.h"
 #include "GE_FireballBurn.h"
 
 ABOFireballSpell::ABOFireballSpell()
