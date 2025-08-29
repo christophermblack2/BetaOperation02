@@ -63,3 +63,20 @@ void ABOFireballSpell::HandleImpact(const FHitResult& SweepResult)
     Super::HandleImpact(SweepResult);
 }
 
+bool ABOFireballSpell::CanCastNow() const
+{
+    if (const UWorld* W = GetWorld())
+    {
+        return W->GetTimeSeconds() >= NextCastTime;
+    }
+    return false;
+}
+
+void ABOFireballSpell::StartCooldown()
+{
+    if (UWorld* W = GetWorld())
+    {
+        NextCastTime = W->GetTimeSeconds() + Cooldown;
+    }
+}
+
